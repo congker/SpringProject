@@ -20,7 +20,6 @@ public class MyRedistest {
         jedis.set(watchkeys, "100");//设置起始的抢购数
         // jedis.del("setsucc", "setfail");
         jedis.close();
-
         for (int i = 0; i < 1000; i++) {//设置1000个人来发起抢购
             executor.execute(new MyRunnable("user"+getRandomString(6)));
         }
