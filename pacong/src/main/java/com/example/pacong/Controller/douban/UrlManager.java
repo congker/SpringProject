@@ -1,10 +1,11 @@
-package com.example.pacong.Controller;
+package com.example.pacong.Controller.douban;
 
 import java.util.*;
 import java.util.stream.Collectors;
 
 /**
  * Created by xuwencong on 2019/4/1
+ * 队列管理
  */
 class UrlManager {
     private String baseUrl;
@@ -15,15 +16,12 @@ class UrlManager {
         this(baseUrl, Collections.singletonList(rootUrl));
     }
 
-
     private UrlManager(String baseUrl, List<String> rootUrls) {
         if (baseUrl == null || rootUrls == null || rootUrls.isEmpty()) {
             return;
         }
         this.baseUrl = baseUrl;
-        // 添加待抓取URL列表
-        this.appendNewUrls(rootUrls);
-
+        this.appendNewUrls(rootUrls); // 添加待抓取URL列表
     }
 
     /**
@@ -32,16 +30,11 @@ class UrlManager {
      * @param urls
      */
     void appendNewUrls(List<String> urls) {
-        // 添加待抓取URL列表
-        newUrls.addAll(urls.stream()
-                // 过滤指定URL
-                .filter(url -> url.startsWith(baseUrl))
-                // 处理URL中的多余参数(&status=P，有的链接有，有的没有，为避免重复，统一去除，去除后并不影响)
-                .map(url -> url.replace("&status=P", ""))
-                // 过滤重复的URL
-                .filter(url -> !newUrls.contains(url) && !oldUrls.contains(url))
-                // 返回处理过后的URL列表
-                .collect(Collectors.toList()));
+        newUrls.addAll(urls.stream()      // 添加待抓取URL列表
+                .filter(url -> url.startsWith(baseUrl)) // 过滤指定URL
+                .map(url -> url.replace("&status=P", "")) // 处理URL中的多余参数(&status=P，有的链接有，有的没有，为避免重复，统一去除，去除后并不影响)
+                .filter(url -> !newUrls.contains(url) && !oldUrls.contains(url)) // 过滤重复的URL
+                .collect(Collectors.toList())); // 返回处理过后的URL列表
     }
 
     boolean hasNewUrl() {

@@ -1,11 +1,14 @@
-package com.example.pacong.Controller;
+package com.example.pacong.Controller.douban;
 
 import java.util.List;
 
 /**
  * Created by xuwencong on 2019/4/1
+ *
+ * 数据处理器
  */
 class DataProcessor<T>{
+
     private static final int DEFAULT_PORT = 27017;
 
     DataProcessor(String host) {

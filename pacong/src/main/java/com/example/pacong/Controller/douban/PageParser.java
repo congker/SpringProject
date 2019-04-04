@@ -1,6 +1,7 @@
-package com.example.pacong.Controller;
+package com.example.pacong.Controller.douban;
 
 import lombok.AllArgsConstructor;
+import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
@@ -13,19 +14,20 @@ import java.util.stream.Collectors;
 
 /**
  * Created by xuwencong on 2019/4/1
+ *
+ * 页面解析器
  */
 class PageParser<T> {
+
     @lombok.Data
     @AllArgsConstructor
     @NoArgsConstructor
     static class Data<T> {
-
         private List<String> links;
         private List<T> results;
     }
 
     Data parse(String url, String html) {
-
         Document doc = Jsoup.parse(html, url);
 
         // 获取链接列表
