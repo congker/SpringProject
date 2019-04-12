@@ -83,7 +83,6 @@ public class CrawTextThread extends Thread {
 
     private static String FileterHtml(String str) {
         return str.replaceAll(" ", "").replaceAll("<br>", "\r\n");
-
     }
 
     public static void main(String[] args) {

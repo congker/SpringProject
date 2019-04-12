@@ -8,7 +8,7 @@ import java.util.stream.Collectors;
 /**
  * Created by xuwencong on 2019/4/4
  */
-@Service
+//@Service
 public class UrlService {
     private String baseUrl;
     private Queue<String> newUrls = new LinkedList<>();

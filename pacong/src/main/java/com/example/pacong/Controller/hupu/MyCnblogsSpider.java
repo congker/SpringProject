@@ -18,11 +18,11 @@ public class MyCnblogsSpider implements PageProcessor {
 
     public void process(Page page) {
         if (!page.getUrl().regex("http://www.cnblogs.com/[a-z 0-9 -]+/p/[0-9]{7}.html").match()) {
-            page.addTargetRequests(
-                    page.getHtml().xpath("//*[@id=\"mainContent\"]/div/div/div[@class=\"postTitle\"]/a/@href").all());
+            page.addTargetRequests(page.getHtml().xpath("//*[@id=\"mainContent\"]/div/div/div[@class=\"postTitle\"]/a/@href").all());
         } else {
-            page.putField(page.getHtml().xpath("//*[@id=\"cb_post_title_url\"]/text()").toString(),
-                    page.getHtml().xpath("//*[@id=\"cb_post_title_url\"]/@href").toString());
+            page.putField(page.getHtml()
+                .xpath("//*[@id=\"cb_post_title_url\"]/text()").toString(),
+                        page.getHtml().xpath("//*[@id=\"cb_post_title_url\"]/@href").toString());
         }
     }
 
