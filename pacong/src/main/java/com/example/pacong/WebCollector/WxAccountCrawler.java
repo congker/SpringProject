@@ -22,30 +22,24 @@ public class WxAccountCrawler extends BreadthCrawler {
 
     private static final Logger LOG = LoggerFactory.getLogger(WxAccountCrawler.class);
 
-    private String historyKeysPath;
     private BufferedWriter historyKeysWriter;
 
     private WxAccountCrawler(String crawlPath, String historyKeysPath) throws Exception {
         super(crawlPath, false);
-        this.historyKeysPath = historyKeysPath;
+        String historyKeysPath1 = historyKeysPath;
         LOG.info("initializing history-keys-filter ......");
         this.setNextFilter(new HistoryKeysFilter(historyKeysPath));
         LOG.info("creating history-keys-writer");
-        historyKeysWriter = new BufferedWriter(new OutputStreamWriter(
-                new FileOutputStream(historyKeysPath, true), "utf-8"));
+        historyKeysWriter = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(historyKeysPath, true), "utf-8"));
 
     }
 
     @Override
     public void visit(Page page, CrawlDatums next) {
         String account = page.meta("account");
-
-
         try {
-
             if (page.matchType("account_search")) {
                 //对于账号搜索页面
-
                 //抽取公众号文章列表页URL
                 Element accountLinkEle = page.select("p.tit>a").first();
                 //防止搜索结果为空
@@ -64,7 +58,6 @@ public class WxAccountCrawler extends BreadthCrawler {
 
             } else if (page.matchType("article_list")) {
                 //对于公众号文章列表页
-
                 String prefix = "msgList = ";
                 String suffix = "seajs.use";
                 int startIndex = page.html().indexOf(prefix) + prefix.length();
@@ -79,14 +72,12 @@ public class WxAccountCrawler extends BreadthCrawler {
                     String articleUrl = "http://mp.weixin.qq.com" + articleJSON.getString("content_url").replace("&", "&");
                     next.add(new CrawlDatum(articleUrl, "article").key(key).meta("account", account));
                 }
-
             } else if (page.matchType("article")) {
                 //对于文章页
                 //抽取标题、内容等信息，此处仅print少数信息作为参考
                 String title = page.select("h2.rich_media_title").first().text().trim();
                 String date = page.select("em#post-date").first().text().trim();
                 String content = page.select("div.rich_media_content").first().text().trim();
-
                 writeHistoryKey(page.key());
                 JSONObject articleJSON = new JSONObject();
                 articleJSON.put("account", account)
@@ -125,7 +116,6 @@ public class WxAccountCrawler extends BreadthCrawler {
     //该示例读取文件中的key进行文章去重
     //线上应用请老老实实用数据库
     public class HistoryKeysFilter extends HashSetNextFilter {
-
         //读取历史文章标题，用于去重
         HistoryKeysFilter(String historyKeysPath) throws Exception {
             File historyFile = new File(historyKeysPath);
