@@ -30,24 +30,25 @@ public class ImgDownloader {
         Elements links = doc.select("img[src]");
 
         for (Element element : links) {
-
-
             String src = element.attr("src");
             String imageName = src.substring(src.lastIndexOf("/") + 1, src.length());
             String fileName = imageName.split("[?]")[0];
-//            System.out.println("name:" + fileName);
+            //建立网络连接
             URL url = new URL(src);
-            System.out.println("url:" + url);
-            InputStream inputStream = url.openConnection().getInputStream();
-            OutputStream outputStream = new FileOutputStream(new File(PIC_PATH, fileName));
+            try {
+                //打开网络连接，获取输入流
+                InputStream inputStream = url.openConnection().getInputStream();
 
-            byte[] buf = new byte[1024];
-            int len;
+                OutputStream outputStream = new FileOutputStream(new File(PIC_PATH, fileName));
+                byte[] buf = new byte[1024];
+                int len;
 
-            while ((len = inputStream.read(buf)) != -1) {
-                outputStream.write(buf, 0, len);
+                while ((len = inputStream.read(buf)) != -1) {
+                    outputStream.write(buf, 0, len);
+                }
+            } catch (IOException e) {
+                e.printStackTrace();
             }
-
         }
     }
 
